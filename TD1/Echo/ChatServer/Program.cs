@@ -36,6 +36,7 @@ namespace Echo
 
     public class handleClient
     {
+        static string HTTP_ROOT = @"D:\Users\io\Desktop\SI4\S8\SoC_WS\TD\TD1\eiin839\TD1\Echo\www\pub";
         TcpClient clientSocket;
         public void startClient(TcpClient inClientSocket)
         {
@@ -52,12 +53,23 @@ namespace Echo
             BinaryReader reader = new BinaryReader(stream);
             BinaryWriter writer = new BinaryWriter(stream);
 
+            string header = "HTTP/1.0 200 OK";
+
+            string fichierHTML = File.ReadAllText(HTTP_ROOT + "\\index.html");
+
             while (true)
             {
-
                 string str = reader.ReadString();
-                Console.WriteLine(str);
-                writer.Write(str);
+                if (str.Equals("GET /index.html"))
+                {
+                    Console.Write("Requête prise en compte");
+                    writer.Write(header + "\n" + fichierHTML);
+                }
+                else
+                {
+                    Console.WriteLine(str);
+                    writer.Write(str);
+                }
             }
         }
 
